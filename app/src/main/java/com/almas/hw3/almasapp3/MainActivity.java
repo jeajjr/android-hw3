@@ -1,4 +1,4 @@
-package com.almas.hw3.almaslab3;
+package com.almas.hw3.almasapp3;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -10,6 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.ListView;
+
+import com.almas.hw3.almaslab3.R;
+
+import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -60,6 +66,15 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            MovieData mv = new MovieData();
+            List<Map<String, ?>> movies = mv.getMoviesList();
+
+            ListView moviesList = (ListView) rootView.findViewById(R.id.listViewMovies);
+            MyAdapter listAdapter = new MyAdapter(getActivity().getApplicationContext(), movies);
+
+            moviesList.setAdapter(listAdapter);
+
             return rootView;
         }
     }
