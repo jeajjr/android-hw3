@@ -43,24 +43,34 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.movie_list_layout, parent, false);
+        View rowView;
+        ViewHolder holder = null;
 
-        ImageView image = (ImageView) rowView.findViewById(R.id.imageViewMoviesImage);
-        TextView title = (TextView) rowView.findViewById(R.id.textViewMoviesTitle);
-        TextView description = (TextView) rowView.findViewById(R.id.textViewMoviesDescription);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = inflater.inflate(R.layout.movie_list_layout, parent, false);
+
+            holder = new ViewHolder();
+
+            holder.image = (ImageView) rowView.findViewById(R.id.imageViewMoviesImage);
+            holder.name = (TextView) rowView.findViewById(R.id.textViewMoviesTitle);
+            holder.description = (TextView) rowView.findViewById(R.id.textViewMoviesDescription);
+            rowView.setTag(holder);
+        }
+        else {
+            rowView = convertView;
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         Map<String, ?> entry = movieList.get(position);
-        image.setImageResource((Integer) entry.get("image"));
-        title.setText((String) entry.get("name"));
-        description.setText((String) entry.get("description"));
+        holder.image.setImageResource((Integer) entry.get("image"));
+        holder.name.setText((String) entry.get("name"));
+        holder.description.setText((String) entry.get("description"));
 
         if (position%2 == 0)
-            rowView.setBackgroundColor(0x0000FF00);
+            rowView.setBackgroundColor(Color.parseColor("#FFCCEE"));
         else
-            rowView.setBackgroundColor(0x00FFFF00);
-
-        rowView.invalidate();
+            rowView.setBackgroundColor(Color.parseColor("#BBFFEE"));
 
         return rowView;
     }

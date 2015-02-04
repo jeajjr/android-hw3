@@ -4,16 +4,22 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.almas.hw3.almaslab3.R;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-
+        public final String TAG = "PlaceholderFragment";
         public PlaceholderFragment() {
         }
 
@@ -74,6 +80,25 @@ public class MainActivity extends ActionBarActivity {
             MyAdapter listAdapter = new MyAdapter(getActivity().getApplicationContext(), movies);
 
             moviesList.setAdapter(listAdapter);
+            moviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d(TAG, "onItemClick: " + position);
+
+                    final HashMap<String, ?> itemMap = (HashMap<String, ?>) parent.getItemAtPosition(position);
+                    final String item = (String) itemMap.get("name");
+
+                    TextView tv = (TextView) view.findViewById(R.id.textViewMoviesTitle);
+                    String name = tv.getText().toString();
+                    Toast.makeText(getActivity(), "Selected " + name, Toast.LENGTH_SHORT).show();
+
+                    CheckBox cb = (CheckBox) view.findViewById(R.id.checkBoxMovies);
+
+                    final HashMap<String, Boolean> itemMap_bool = (HashMap<String, Boolean>) itemMap;
+                    itemMap_bool.put("selection", !cb.isChecked());
+                    cb.setChecked(!cb.isChecked());
+                }
+            });
 
             return rootView;
         }
