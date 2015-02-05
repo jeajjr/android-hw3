@@ -18,11 +18,11 @@ import java.util.Map;
 /**
  * Created by jeajjr on 2/3/15.
  */
-public class MyAdapter extends BaseAdapter {
+public class ListViewAdapter extends BaseAdapter {
     private final Context context;
     private final List<Map<String,?>> movieList;
 
-   public MyAdapter (Context context, List<Map<String,?>> movieList) {
+   public ListViewAdapter(Context context, List<Map<String, ?>> movieList) {
        this.context = context;
        this.movieList = movieList;
    }
