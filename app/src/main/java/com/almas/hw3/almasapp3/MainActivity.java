@@ -53,12 +53,21 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+/*
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_list_view:
+                getFragmentManager().beginTransaction()
+                        .remove(GridViewFragment())
+                        .commit();
+                return true;
+            case R.id.action_grid_view:
+                getFragmentManager().beginTransaction()
+                        .add(R.id.container, new GridViewFragment())
+                        .commit();
+                return true;
         }
-
+*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -79,7 +88,10 @@ public class MainActivity extends ActionBarActivity {
             MovieData mv = new MovieData();
             final List<Map<String, ?>> movies = mv.getMoviesList();
 
-            ListView moviesList = (ListView) rootView.findViewById(R.id.listViewMovies);
+            final ListView moviesList = (ListView) rootView.findViewById(R.id.listViewMovies);
+
+            final MyAdapter listAdapter = new MyAdapter(getActivity().getApplicationContext(), movies);
+            moviesList.setAdapter(listAdapter);
 
             moviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -100,15 +112,23 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
 
-            final MyAdapter listAdapter = new MyAdapter(getActivity().getApplicationContext(), movies);
-            moviesList.setAdapter(listAdapter);
+            moviesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    movies.add(position, movies.get(position));
+                    listAdapter.notifyDataSetChanged();
+
+                    return true;
+                }
+            });
 
             Button selectAll = (Button) rootView.findViewById(R.id.buttonMoviesSelectAll);
             selectAll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for (Map<String, ?> item : movies)
-                        ((Map<String, Boolean>) item).put("selected", true);
+                    for (int i = 0; i < movies.size(); i++)
+                        if (listAdapter.isEnabled(i))
+                            ((Map<String, Boolean>) movies.get(i)).put("selected", true);
                     listAdapter.notifyDataSetChanged();
                 }
             });

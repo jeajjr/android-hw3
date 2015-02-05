@@ -44,11 +44,11 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        if (position <= 3)
+        if (position <= 2)
             return false;
         return true;
     }
-    
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView;
