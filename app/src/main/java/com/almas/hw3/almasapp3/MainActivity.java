@@ -1,5 +1,6 @@
 package com.almas.hw3.almasapp3;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -71,22 +73,20 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            Log.d(TAG, "onCreateView");
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             MovieData mv = new MovieData();
-            List<Map<String, ?>> movies = mv.getMoviesList();
+            final List<Map<String, ?>> movies = mv.getMoviesList();
 
             ListView moviesList = (ListView) rootView.findViewById(R.id.listViewMovies);
-            MyAdapter listAdapter = new MyAdapter(getActivity().getApplicationContext(), movies);
 
-            moviesList.setAdapter(listAdapter);
             moviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.d(TAG, "onItemClick: " + position);
+                    Log.d(TAG, "onItemClick");
 
                     final HashMap<String, ?> itemMap = (HashMap<String, ?>) parent.getItemAtPosition(position);
-                    final String item = (String) itemMap.get("name");
 
                     TextView tv = (TextView) view.findViewById(R.id.textViewMoviesTitle);
                     String name = tv.getText().toString();
@@ -95,8 +95,51 @@ public class MainActivity extends ActionBarActivity {
                     CheckBox cb = (CheckBox) view.findViewById(R.id.checkBoxMovies);
 
                     final HashMap<String, Boolean> itemMap_bool = (HashMap<String, Boolean>) itemMap;
-                    itemMap_bool.put("selection", !cb.isChecked());
+                    itemMap_bool.put("selected", !cb.isChecked());
                     cb.setChecked(!cb.isChecked());
+                }
+            });
+
+            final MyAdapter listAdapter = new MyAdapter(getActivity().getApplicationContext(), movies);
+            moviesList.setAdapter(listAdapter);
+
+            Button selectAll = (Button) rootView.findViewById(R.id.buttonMoviesSelectAll);
+            selectAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (Map<String, ?> item : movies)
+                        ((Map<String, Boolean>) item).put("selected", true);
+                    listAdapter.notifyDataSetChanged();
+                }
+            });
+
+            Button clearAll = (Button) rootView.findViewById(R.id.buttonMoviesClearAll);
+            clearAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (Map<String, ?> item : movies)
+                        ((Map<String, Boolean>) item).put("selected", false);
+                    listAdapter.notifyDataSetChanged();
+                }
+            });
+
+            Button delete = (Button) rootView.findViewById(R.id.buttonMoviesDelete);
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int deleted = 0;
+
+                    for (int i = 0; i < movies.size(); ) {
+                        if (((Map<String, Boolean>) movies.get(i)).get("selected")) {
+                            movies.remove(i);
+                            deleted++;
+                        }
+                        else
+                            i++;
+                    }
+                    listAdapter.notifyDataSetChanged();
+
+                    Toast.makeText(getActivity(), deleted + " movies were deleted", Toast.LENGTH_SHORT).show();
                 }
             });
 

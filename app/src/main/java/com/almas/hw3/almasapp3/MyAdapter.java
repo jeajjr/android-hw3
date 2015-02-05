@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +43,13 @@ public class MyAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        if (position <= 3)
+            return false;
+        return true;
+    }
+    
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView;
         ViewHolder holder = null;
@@ -55,6 +63,7 @@ public class MyAdapter extends BaseAdapter {
             holder.image = (ImageView) rowView.findViewById(R.id.imageViewMoviesImage);
             holder.name = (TextView) rowView.findViewById(R.id.textViewMoviesTitle);
             holder.description = (TextView) rowView.findViewById(R.id.textViewMoviesDescription);
+            holder.checkBox = (CheckBox) rowView.findViewById(R.id.checkBoxMovies);
             rowView.setTag(holder);
         }
         else {
@@ -66,6 +75,7 @@ public class MyAdapter extends BaseAdapter {
         holder.image.setImageResource((Integer) entry.get("image"));
         holder.name.setText((String) entry.get("name"));
         holder.description.setText((String) entry.get("description"));
+        holder.checkBox.setChecked((Boolean) entry.get("selected"));
 
         if (position%2 == 0)
             rowView.setBackgroundColor(Color.parseColor("#FFCCEE"));

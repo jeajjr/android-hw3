@@ -292,6 +292,7 @@ public class MovieData {
         movie.put("director",director);
         movie.put("stars",stars);
         movie.put("url",url);
+        movie.put("selected", false);
 
         return movie;
     }

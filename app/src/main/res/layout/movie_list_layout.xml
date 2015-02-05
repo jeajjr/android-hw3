@@ -19,9 +19,9 @@
         android:text="Title"
         android:id="@+id/textViewMoviesTitle"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageViewMoviesImage"
         android:layout_marginTop="3dp"
-        android:textColor="#ff454545" />
+        android:textColor="#ff454545"
+        android:layout_toEndOf="@+id/imageViewMoviesImage" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,9 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/checkBoxMovies"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:checked="false"
-        android:buttonTint="#ff454545" />
+        android:buttonTint="#ff454545"
+        android:focusable="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

@@ -13,17 +13,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select all"
-            android:id="@+id/button"
-            android:layout_alignTop="@+id/button3"
-            android:layout_toStartOf="@+id/button2" />
+            android:id="@+id/buttonMoviesSelectAll"
+            android:layout_alignTop="@+id/buttonMoviesDelete"
+            android:layout_toStartOf="@+id/buttonMoviesClearAll" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Clear All"
-            android:id="@+id/button2"
-            android:layout_alignTop="@+id/button"
+            android:id="@+id/buttonMoviesClearAll"
+            android:layout_alignTop="@+id/buttonMoviesSelectAll"
             android:layout_centerHorizontal="true" />
 
         <Button
@@ -31,9 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete"
-            android:id="@+id/button3"
+            android:id="@+id/buttonMoviesDelete"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/button2" />
+            android:layout_toEndOf="@+id/buttonMoviesClearAll" />
     </LinearLayout>
 
     <ListView
